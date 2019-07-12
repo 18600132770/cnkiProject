@@ -1,0 +1,27 @@
+<workflow-app name="1192" xmlns="uri:oozie:workflow:0.5">
+    <start to="spark-8b527800-274e-45c8-aa01-435daaeb4eaa"/>
+    <kill name="Kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <action name="spark-8b527800-274e-45c8-aa01-435daaeb4eaa">
+        <spark xmlns="uri:oozie:spark-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <master>local</master>
+            <mode>client</mode>
+            <name>filter</name>
+            <class>com.cnki.spark.core.FilterAlgorithm</class>
+            <jar>cnkiProject-1.0-SNAPSHOT.jar</jar>
+            <spark-opts>--driver-memory 5g   --executor-memory 5g</spark-opts>
+            <arg>/DataAnalyse/1192/output</arg>
+            <arg>/DataAnalyse/1192/input</arg>
+            <arg>{"filterExID":"eec0498e-ff19-47c7-a462-c7bda78d91d0","selectedItem":"id(id)","leftValue":"","selectedFilterNotNull":"","filterFields":["id(id)"],"itemsMethodForFilter":[{"label":"内存计算","value":"memory"},{"label":"云计算","value":"cloud"}],"itemsColumn":[],"selectedFilterMethod":">=","dictionary":[{"datatype":"INT","name":"id(id)"},{"datatype":"VARCHAR","name":"lng(lng)"},{"datatype":"VARCHAR","name":"info(info)"}],"filterValue":"1","lists":[],"rightValue":"","fields":["id(id)","lng(lng)","info(info)"],"selectedMethodForFilter":"cloud"}</arg>
+            <arg>spark-24f43d46-29c1-436e-8680-0bb6a7b97104</arg>
+            <arg>{"spark-eec0498e-ff19-47c7-a462-c7bda78d91d0":"input"}</arg>
+            <file>/user/hue/oozie/spark-jar/cnkiProject-1.0-SNAPSHOT.jar#cnkiProject-1.0-SNAPSHOT.jar</file>
+        </spark>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+    <end name="End"/>
+</workflow-app>
